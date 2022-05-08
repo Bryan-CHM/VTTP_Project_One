@@ -51,7 +51,6 @@ public class LoginController {
         mvc.setViewName("invalid");
         
         if(loginRepo.verifyUser(user)){
-            mvc.setStatus(HttpStatus.OK);
             // mvc.addObject("user",user);
             session.setAttribute("user", user);
             mvc = new ModelAndView("redirect:/savings");
