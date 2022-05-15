@@ -1,6 +1,7 @@
 package VTTP.Project.VTTP_Project_One.repositories;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
@@ -11,6 +12,8 @@ import VTTP.Project.VTTP_Project_One.models.User;
 public class LoginRepository {
 
     private static final String SQL_VERIFY_USER = "select * from user where username = ? and password = sha1(?);";
+    private static final String SQL_CREATE_USER = "insert into user(username, password) values(?, sha1(?));";
+    public static final String SQL_DELETE_USER = "delete from user where username = ?;";
 
     @Autowired
     private JdbcTemplate template;
@@ -20,11 +23,19 @@ public class LoginRepository {
             SQL_VERIFY_USER, user.getUsername(),user.getPassword());
 
         if(result.next()){
-            // if(!result.getString("username").isEmpty()){
                 return true;
-            // }
         }
         return false;   
+    }
+
+    public Boolean createUser(User user) throws DataIntegrityViolationException{
+        int count = template.update(SQL_CREATE_USER, user.getUsername(), user.getPassword());
+        return 1 == count; 
+    }
+
+    public Boolean deleteUser(User user){
+        int count = template.update(SQL_DELETE_USER, user.getUsername());
+        return 1 == count;  
     }
     
 

@@ -7,7 +7,11 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Successfully Logged in!</h1>
+    <h1>Your current balance is <span th:text="${user.savings}"></span></h1>
+    <form action="/savings/add" method="post">
+        <input type="number" name="value" id="">
+        <button type="submit">Add</button>  
+    </form>
     <a href="/logout">Logout</a>
 </body>
 </html>

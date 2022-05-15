@@ -2,11 +2,13 @@ package VTTP.Project.VTTP_Project_One;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
@@ -15,12 +17,35 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import VTTP.Project.VTTP_Project_One.models.User;
+import VTTP.Project.VTTP_Project_One.repositories.LoginRepository;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 public class LoginTests {
 
     @Autowired
     private MockMvc mvc;
+
+    @Autowired
+    private LoginRepository loginRepo;
+
+    private User fakeUserInfo(){
+        User user = new User();
+        user.setUsername("test");
+        user.setPassword("test");
+        return user;
+    }
+
+    @BeforeEach
+    public void createFakeUser(){
+        loginRepo.createUser(fakeUserInfo());
+    }
+
+    @AfterEach
+    public void deleteFakeUser(){
+        loginRepo.deleteUser(fakeUserInfo());   
+    }
 
     @Test
     public void homePageTest(){
@@ -136,6 +161,22 @@ public class LoginTests {
             fail("cannot retrieve response for logout", ex);
             return;
         }
+    }
+
+    // @Test
+    // public void createInvalidUser(){
+    //     User user = new User();
+    //     user.setUsername("test");
+    //     user.setPassword("test");
+    //     loginRepo.createUser(user);
+    // }
+
+    @Test
+    public void deleteInvalidUser(){
+        User user = new User();
+        user.setUsername("testabc");
+        user.setPassword("testabc");
+        loginRepo.deleteUser(user);
     }
 }
     
