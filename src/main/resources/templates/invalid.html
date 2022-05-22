@@ -7,7 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Invalid Credentials</h1>
-    <a href="/">Try again?</a>
+    <h1 th:if="${errormessage} == 0">Username already taken! Please <a href="/create">try again!</a> </h1>
+    <h1 th:if="${errormessage} == 1">Incorrect username or password! Please <a href="/">try again!</a></h1>
 </body>
 </html>

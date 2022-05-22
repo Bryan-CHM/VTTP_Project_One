@@ -1,6 +1,4 @@
--- Insert 5 - 6 users
--- Try batch insert
-
+-- Insert testusers
 insert into user(username, password)
     values 
         ('testuser', sha1('password')),

@@ -28,6 +28,37 @@ public class LoginController {
         mvc.setViewName("index");
         return mvc;
     }
+    
+    @GetMapping("/create")
+    public ModelAndView createUserPage(){
+        ModelAndView mvc = new ModelAndView();
+        mvc.setViewName("create");
+        return mvc;
+    }
+    
+    @PostMapping("/create")
+    public ModelAndView createNewUser(@RequestBody MultiValueMap<String, String> form, HttpSession session){
+        ModelAndView mvc = new ModelAndView();
+        String username = form.getFirst("username");
+        String password = form.getFirst("password");
+
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+
+        if(loginRepo.checkIfUserExists(user) != -1){
+            mvc.setStatus(HttpStatus.UNAUTHORIZED);
+            mvc.setViewName("invalid");
+            mvc.addObject("errormessage", "0");
+        }
+        else{
+            loginRepo.createUser(user);
+            session.setAttribute("user", user);
+            mvc = new ModelAndView("redirect:/protected/dashboard");
+        }
+
+        return mvc;
+    }
 
     @GetMapping("/logout")
     public ModelAndView logout(HttpSession session){
@@ -49,11 +80,11 @@ public class LoginController {
         ModelAndView mvc = new ModelAndView();
         mvc.setStatus(HttpStatus.UNAUTHORIZED);
         mvc.setViewName("invalid");
+        mvc.addObject("errormessage", "1");
         
         if(loginRepo.verifyUser(user)){
-            // mvc.addObject("user",user);
             session.setAttribute("user", user);
-            mvc = new ModelAndView("redirect:/savings");
+            mvc = new ModelAndView("redirect:/protected/dashboard");
         }
         return mvc;
     }
