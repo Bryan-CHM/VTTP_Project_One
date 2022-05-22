@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div th:if="${animals.size() > 0}">
+        <h1><span th:text="${name}"></span> has liked these animals: </h1>
+        <table border="1" >
+            <tr th:each="a : ${animals}">
+                <td><img src="#" th:src="${a.image_url}" alt="" ></td>
+
+                <td><b>Name:</b><br><span th:text="${a.name}"></span></td>
+
+                <td><b>Type:</b><br><span th:text="${a.animal_type}"></span></td>
+
+                <td><b>Active during:</b><br><span th:text="${a.active_time}"></span></td>
+
+                <td><b>Habitat:</b><br><span th:text="${a.habitat}"></span></td>
+
+                <td><b>Diet:</b><br><span th:text="${a.diet}"></span></td>
+
+                <td><b>Location:</b><br><span th:text="${a.location}"></span></td>
+
+                <td><b>Lifespan:</b><br><span th:text="${a.lifespan}"></span> years</td>
+
+                <td><b>Length:</b><br><span th:text="${a.min_length}"></span> - <span th:text="${a.max_length}"></span>ft</td>
+                
+                <td><b>Weight:</b><br><span th:text="${a.min_weight}"></span> - <span th:text="${a.max_weight}"></span>lbs</td>
+            </tr>
+        </table>
+    </div>
+    <h1 th:unless="${animals.size() > 0}"><span th:text="${name}"></span> has not liked any animals yet!</h1>
+    <a href="/">Back</a>
+</body>
+</html>

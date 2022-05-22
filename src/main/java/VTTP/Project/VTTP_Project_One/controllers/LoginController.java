@@ -1,5 +1,8 @@
 package VTTP.Project.VTTP_Project_One.controllers;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,12 +10,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import VTTP.Project.VTTP_Project_One.models.Animal;
 import VTTP.Project.VTTP_Project_One.models.User;
+import VTTP.Project.VTTP_Project_One.repositories.AnimalRepository;
 import VTTP.Project.VTTP_Project_One.repositories.LoginRepository;
 
 @Controller
@@ -21,6 +27,9 @@ public class LoginController {
 
     @Autowired
     private LoginRepository loginRepo;
+
+    @Autowired
+    private AnimalRepository animalRepo;
     
     @GetMapping("/")
     public ModelAndView homePage(){
@@ -85,6 +94,27 @@ public class LoginController {
         if(loginRepo.verifyUser(user)){
             session.setAttribute("user", user);
             mvc = new ModelAndView("redirect:/protected/dashboard");
+        }
+        return mvc;
+    }
+
+    @GetMapping("/user/{name}")
+    public ModelAndView viewUserFavourites(@PathVariable String name){
+        ModelAndView mvc = new ModelAndView();
+        User user = new User();
+        user.setUsername(name);
+        Integer userId = loginRepo.checkIfUserExists(user);
+        mvc.addObject("name", name);
+        if(userId != -1){
+            List<Animal> animals = animalRepo.getFavouriteAnimals(userId);
+            mvc.addObject("animals", animals);
+            mvc.setViewName("publicfavourites");
+            mvc.setStatus(HttpStatus.OK);
+        }
+        else{
+            mvc.addObject("errormessage", "2");
+            mvc.setViewName("invalid");
+            mvc.setStatus(HttpStatus.UNAUTHORIZED);
         }
         return mvc;
     }

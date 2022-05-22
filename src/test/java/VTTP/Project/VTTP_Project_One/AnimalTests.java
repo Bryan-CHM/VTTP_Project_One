@@ -2,8 +2,6 @@ package VTTP.Project.VTTP_Project_One;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.List;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -314,6 +312,58 @@ public class AnimalTests {
             assertEquals(200,statusCode);
         } catch (Exception ex) {
             fail("cannot retrieve response for removing non-existing favourite animal", ex);
+            return;
+        }
+    }
+
+    @Test
+    public void viewValidUserFavouritesTest(){
+
+        RequestBuilder req = MockMvcRequestBuilders.get("/user/test")
+        .accept(MediaType.TEXT_HTML_VALUE);
+
+        // Call the controller
+        MvcResult result = null;
+        try {
+            result = mvc.perform(req).andReturn();
+        } catch (Exception ex) {
+            fail("cannot perform mvc invocation for viewing user's favourites", ex);
+            return;
+        }
+
+        // Get response
+        MockHttpServletResponse resp = result.getResponse();
+        try {
+            Integer statusCode = resp.getStatus();
+            assertEquals(200,statusCode);
+        } catch (Exception ex) {
+            fail("cannot retrieve response for viewing user's favourites", ex);
+            return;
+        }
+    }
+
+    @Test
+    public void viewInvalidUserFavouritesTest(){
+
+        RequestBuilder req = MockMvcRequestBuilders.get("/user/testabc")
+        .accept(MediaType.TEXT_HTML_VALUE);
+
+        // Call the controller
+        MvcResult result = null;
+        try {
+            result = mvc.perform(req).andReturn();
+        } catch (Exception ex) {
+            fail("cannot perform mvc invocation for viewing user's favourites", ex);
+            return;
+        }
+
+        // Get response
+        MockHttpServletResponse resp = result.getResponse();
+        try {
+            Integer statusCode = resp.getStatus();
+            assertEquals(401,statusCode);
+        } catch (Exception ex) {
+            fail("cannot retrieve response for viewing user's favourites", ex);
             return;
         }
     }
