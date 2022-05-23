@@ -1,6 +1,5 @@
 package VTTP.Project.VTTP_Project_One.controllers;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;

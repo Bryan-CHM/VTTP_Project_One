@@ -64,6 +64,7 @@ public class AnimalController {
             a.setLikes(animalRepo.getNumberOfFavourites(a.getName()));
         }
         mvc.addObject("user", user);
+        mvc.addObject("number", number);
         mvc.addObject("animals", animals);
         mvc.setStatus(HttpStatus.OK);
         mvc.setViewName("results");

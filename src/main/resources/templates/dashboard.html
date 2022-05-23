@@ -4,56 +4,90 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous"/>
     <link rel="stylesheet" href="../styles.css"/>
+    <title>Dashboard</title>
 </head>
 <body>
-    <h1>Welcome, <span th:text="${user.username}"></span>.</h1>
-    <form action="/protected/list" method="post">
-        <label for="num">Generate animals (1-10)</label>
-        <input type="number" name="num" id="" max="10" min="1">
-        <button type="submit">List!</button>
-    </form>
+    <div class="table-container" th:unless="${favanimals.size()>0}">
+        <h1>Welcome, <span th:text="${user.username}"></span>. You have not added any animals yet.</h1>
+    </div>
 
-    <table th:if="${favanimals.size() >0}" border="1">
+    <div class="generate-container" th:unless="${favanimals.size() >0}">
+        <form action="/protected/list" method="post">
+            <div class="dashboard-form-group">
+            <label for="num">Generate animals (1-10)</label>
+            <input type="number" name="num" id="" max="10" min="1">
+            <button class="btn btn-outline-primary" type="submit">Generate!</button>
+        </div>
+        </form>
+    </div>
+    <div class="generate-container2" th:if="${favanimals.size() >0}">
+        <form action="/protected/list" method="post">
+            <div class="dashboard-form-group">
+            <label for="num">Generate animals (1-10)</label>
+            <input type="number" name="num" id="" max="10" min="1">
+            <button class="btn btn-outline-primary" type="submit">Generate!</button>
+        </div>
+        </form>
+    </div>
+    <div class="table-container dashboard" th:if="${favanimals.size() >0}">
+    <h1>Welcome, <span th:text="${user.username}"></span>. Here are your favourite animals.</h1>
+    <table class="table table-dark table-striped" >
+        <thead>
+            <tr>
+                <th>Animal</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Active During</th>
+                <th>Habitat</th>
+                <th>Diet</th>
+                <th>Location</th>
+                <th>Lifespan</th>
+                <th>Length</th>
+                <th>Weight</th>
+                <th><a class="btn btn-outline-primary" href="/logout">Logout</a></th>
+            </tr>
+        </thead>
         <tr th:each="a : ${favanimals}">
             <form action="/protected/remove" method="post">
                 <td><img src="#" th:src="${a.image_url}" alt="" ></td>
                 <input type="hidden" name="image_url" th:value="${a.image_url}">
 
-                <td><b>Name:</b><br><span th:text="${a.name}"></span></td>
+                <td th:text="${a.name}"></td>
                 <input type="hidden" name="name" th:value="${a.name}">
 
-                <td><b>Type:</b><br><span th:text="${a.animal_type}"></span></td>
+                <td th:text="${a.animal_type}"></td>
                 <input type="hidden" name="animal_type" th:value="${a.animal_type}">
 
-                <td><b>Active during:</b><br><span th:text="${a.active_time}"></span></td>
+                <td th:text="${a.active_time}"></td>
                 <input type="hidden" name="active_time" th:value="${a.active_time}">
 
-                <td><b>Habitat:</b><br><span th:text="${a.habitat}"></span></td>
+                <td th:text="${a.habitat}"></td>
                 <input type="hidden" name="habitat" th:value="${a.habitat}">
 
-                <td><b>Diet:</b><br><span th:text="${a.diet}"></span></td>
+                <td th:text="${a.diet}"></td>
                 <input type="hidden" name="diet" th:value="${a.diet}">
 
-                <td><b>Location:</b><br><span th:text="${a.location}"></span></td>
+                <td th:text="${a.location}"></td>
                 <input type="hidden" name="location" th:value="${a.location}">
 
-                <td><b>Lifespan:</b><br><span th:text="${a.lifespan}"></span> years</td>
+                <td><span th:text="${a.lifespan}"></span> years</td>
                 <input type="hidden" name="lifespan" th:value="${a.lifespan}">
 
-                <td><b>Length:</b><br><span th:text="${a.min_length}"></span> - <span th:text="${a.max_length}"></span>ft</td>
+                <td class="nowrap"><span th:text="${a.min_length}"></span> - <span th:text="${a.max_length}"></span>ft</td>
                 <input type="hidden" name="min_length" th:value="${a.min_length}">
                 <input type="hidden" name="max_length" th:value="${a.max_length}">
                 
-                <td><b>Weight:</b><br><span th:text="${a.min_weight}"></span> - <span th:text="${a.max_weight}"></span>lbs</td>
+                <td class="nowrap"><span th:text="${a.min_weight}"></span> - <span th:text="${a.max_weight}"></span>lbs</td>
                 <input type="hidden" name="min_weight" th:value="${a.min_weight}">
                 <input type="hidden" name="max_weight" th:value="${a.max_weight}">
                 
-                <td><button type="submit">Remove</button><br>Liked by <span th:text="${a.likes}"></span> users</td>
+                <td class="nowrap"><button class="btn btn-outline-primary" type="submit">Remove</button><br>Liked by <span th:text="${a.likes}"></span> users</td>
             </form>
         </tr>
     </table>
-    <a href="/logout">Logout!</a>
+</div>
 </body>
 </html>

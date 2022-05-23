@@ -4,37 +4,67 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous"/>
     <link rel="stylesheet" href="../styles.css">
+    <title>Favourite Animals</title>
 </head>
 <body>
-    <div th:if="${animals.size() > 0}">
-        <h1><span th:text="${name}"></span> has liked these animals: </h1>
-        <table border="1" >
+    <div class="table-container" th:if="${animals.size() > 0}">
+        <h1>User <span th:text="${name}"></span> has liked these animals: </h1>
+        <table class="table table-dark table-striped" >
+            <thead>
+                <tr>
+                    <th>Animal</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Active During</th>
+                    <th>Habitat</th>
+                    <th>Diet</th>
+                    <th>Location</th>
+                    <th>Lifespan</th>
+                    <th>Length</th>
+                    <th>Weight</th>
+                    <th><a class="btn btn-outline-primary" href="/">Back</a></th>
+                </tr>
+            </thead>
             <tr th:each="a : ${animals}">
                 <td><img src="#" th:src="${a.image_url}" alt="" ></td>
 
-                <td><b>Name:</b><br><span th:text="${a.name}"></span></td>
+                <td th:text="${a.name}"></td>
 
-                <td><b>Type:</b><br><span th:text="${a.animal_type}"></span></td>
+                <td th:text="${a.animal_type}"></td>
 
-                <td><b>Active during:</b><br><span th:text="${a.active_time}"></span></td>
+                <td th:text="${a.active_time}"></td>
 
-                <td><b>Habitat:</b><br><span th:text="${a.habitat}"></span></td>
+                <td th:text="${a.habitat}"></td>
 
-                <td><b>Diet:</b><br><span th:text="${a.diet}"></span></td>
+                <td th:text="${a.diet}"></td>
 
-                <td><b>Location:</b><br><span th:text="${a.location}"></span></td>
+                <td th:text="${a.location}"></td>
 
-                <td><b>Lifespan:</b><br><span th:text="${a.lifespan}"></span> years</td>
+                <td><span th:text="${a.lifespan}"></span> years</td>
 
-                <td><b>Length:</b><br><span th:text="${a.min_length}"></span> - <span th:text="${a.max_length}"></span>ft</td>
+                <td class="nowrap"><span th:text="${a.min_length}"></span> - <span th:text="${a.max_length}"></span>ft</td>
                 
-                <td><b>Weight:</b><br><span th:text="${a.min_weight}"></span> - <span th:text="${a.max_weight}"></span>lbs</td>
+                <td class="nowrap"><span th:text="${a.min_weight}"></span> - <span th:text="${a.max_weight}"></span>lbs</td>
             </tr>
         </table>
     </div>
-    <h1 th:unless="${animals.size() > 0}"><span th:text="${name}"></span> has not liked any animals yet!</h1>
-    <a href="/">Back</a>
+    <div th:unless="${animals.size() > 0}" class="error-container" >
+            <div class="login-icon">
+                <a href="/">
+                    <i class="fa-solid fa-dove"></i>
+                    <i class="fa-solid fa-paw"></i>
+                    <i class="fa-solid fa-fish-fins"></i>
+            </a>
+            </div>
+            <div class="login-title">
+                An error has occurred: 
+            </div>
+            <div class="errormessage">
+                <label>User <span th:text="${name}"></span> has not liked any animals yet! <a href="/">Please try again!</a></label>
+            </div>
+    </div>
 </body>
 </html>
