@@ -38,6 +38,7 @@ public class AnimalController {
     @GetMapping("/dashboard")
     public ModelAndView getDashboard(HttpSession session){
         User user = (User)session.getAttribute("user");
+        Boolean newlyCreated = (Boolean)session.getAttribute("created");
         ModelAndView mvc = new ModelAndView();
 
         List<Animal> favouriteAnimals = new LinkedList<>();
@@ -47,6 +48,13 @@ public class AnimalController {
         }
         mvc.addObject("user", user);
         mvc.addObject("favanimals", favouriteAnimals);
+        if(newlyCreated != null){
+            mvc.addObject("statusmessage",1);
+        }
+        else{
+            mvc.addObject("statusmessage",0);
+        }
+        session.removeAttribute("created");
         mvc.setStatus(HttpStatus.OK);
         mvc.setViewName("dashboard");
 
@@ -113,6 +121,8 @@ public class AnimalController {
 
         mvc.addObject("user", user);
         mvc.addObject("favanimals", favouriteAnimals);
+        mvc.addObject("addedanimal", animal);
+        mvc.addObject("statusmessage",2);
         mvc.setStatus(HttpStatus.OK);
         mvc.setViewName("dashboard");
 
@@ -160,6 +170,8 @@ public class AnimalController {
 
         mvc.addObject("user", user);
         mvc.addObject("favanimals", favouriteAnimals);
+        mvc.addObject("addedanimal", animal);
+        mvc.addObject("statusmessage",3);
         mvc.setStatus(HttpStatus.OK);
         mvc.setViewName("dashboard");
 

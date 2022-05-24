@@ -91,7 +91,7 @@ public class AnimalTests {
     }
 
     @Test
-    public void validUserDashboardTest(){
+    public void existingUserDashboardTest(){
         User user = new User();
         user.setUsername("test");
         user.setPassword("test");
@@ -112,7 +112,7 @@ public class AnimalTests {
         try {
             result = mvc.perform(req).andReturn();
         } catch (Exception ex) {
-            fail("cannot perform mvc invocation for valid user dashboard", ex);
+            fail("cannot perform mvc invocation for existing user dashboard", ex);
             return;
         }
 
@@ -122,7 +122,47 @@ public class AnimalTests {
             Integer statusCode = resp.getStatus();
             assertEquals(200,statusCode);
         } catch (Exception ex) {
-            fail("cannot retrieve response for valid user dashboard", ex);
+            fail("cannot retrieve response for existing user dashboard", ex);
+            return;
+        }
+        // Clean up fake favourite animal
+        animalRepo.removeFavouriteAnimal(animal, userId);
+    }
+
+    @Test
+    public void newUserDashboardTest(){
+        User user = new User();
+        user.setUsername("test");
+        user.setPassword("test");
+        Integer userId = loginRepo.checkIfUserExists(user);
+        Animal animal = fakeAnimalInfo();
+        // Add Fake Favourite Animal
+        animalRepo.addFavouriteAnimal(animal, userId);
+        
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("user", user);
+        session.setAttribute("created", true);
+
+        RequestBuilder req = MockMvcRequestBuilders.get("/protected/dashboard")
+            .accept(MediaType.TEXT_HTML_VALUE)
+            .session(session);
+
+        // Call the controller
+        MvcResult result = null;
+        try {
+            result = mvc.perform(req).andReturn();
+        } catch (Exception ex) {
+            fail("cannot perform mvc invocation for new user dashboard", ex);
+            return;
+        }
+
+        // Get response
+        MockHttpServletResponse resp = result.getResponse();
+        try {
+            Integer statusCode = resp.getStatus();
+            assertEquals(200,statusCode);
+        } catch (Exception ex) {
+            fail("cannot retrieve response for new user dashboard", ex);
             return;
         }
         // Clean up fake favourite animal

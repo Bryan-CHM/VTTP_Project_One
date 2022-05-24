@@ -2,7 +2,7 @@ body, html{
     height: 100%;
     /* background: #222D32; */
     font-family: 'Roboto', sans-serif;
-    background-image: url('elephant.jpg');
+    background-image: url('elephantblurred.jpg');
     background-repeat: no-repeat;
     background-attachment: fixed;  
     background-size: 100% 100%;
@@ -170,5 +170,11 @@ thead{
     border-bottom: 2px solid #0DB8DE;
     border-radius: 0px;
     outline: 0;
+}
+
+.dashboard-alert{
+    height:fit-content;
+    width:fit-content;
+    margin: 5vh auto;
 }
 

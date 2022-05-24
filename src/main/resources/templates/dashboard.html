@@ -10,15 +10,30 @@
     <title>Dashboard</title>
 </head>
 <body>
+    <div class="alert alert-success dashboard-alert" role="alert" th:if="${statusmessage > 0}">
+        <div th:if="${statusmessage == 1}"> 
+        User account <span th:text="${user.username}"></span> successfully created
+        </div>
+        <div th:if="${statusmessage == 2}">
+        Successfully added <span th:text="${addedanimal.name}"></span>
+        </div>
+        <div th:if="${statusmessage == 3}">
+        Successfully removed <span th:text="${addedanimal.name}"></span>
+        </div>
+    </div>
+
     <div class="table-container" th:unless="${favanimals.size()>0}">
-        <h1>Welcome, <span th:text="${user.username}"></span>. You have not added any animals yet.</h1>
+        <h1>Welcome, <span th:text="${user.username}"></span>. You have not added any animals yet. <a class="btn btn-outline-primary" href="/logout">Logout</a></h1> 
+    </div>
+    <div class="table-container" th:if="${favanimals.size()>0}">
+        <h1>Welcome, <span th:text="${user.username}"></span>. Here are your favourite animals.</h1>
     </div>
 
     <div class="generate-container" th:unless="${favanimals.size() >0}">
         <form action="/protected/list" method="post">
             <div class="dashboard-form-group">
-            <label for="num">Generate animals (1-10)</label>
-            <input type="number" name="num" id="" max="10" min="1">
+            <label for="num">Generate new animals (1-10)</label>
+            <input type="number" name="num" id="" max="10" min="1" required>
             <button class="btn btn-outline-primary" type="submit">Generate!</button>
         </div>
         </form>
@@ -26,14 +41,13 @@
     <div class="generate-container2" th:if="${favanimals.size() >0}">
         <form action="/protected/list" method="post">
             <div class="dashboard-form-group">
-            <label for="num">Generate animals (1-10)</label>
-            <input type="number" name="num" id="" max="10" min="1">
+            <label for="num">Generate new animals (1-10)</label>
+            <input type="number" name="num" id="" max="10" min="1" required>
             <button class="btn btn-outline-primary" type="submit">Generate!</button>
         </div>
         </form>
     </div>
-    <div class="table-container dashboard" th:if="${favanimals.size() >0}">
-    <h1>Welcome, <span th:text="${user.username}"></span>. Here are your favourite animals.</h1>
+    <div class="table-container" th:if="${favanimals.size() >0}">
     <table class="table table-dark table-striped" >
         <thead>
             <tr>

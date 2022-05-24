@@ -62,6 +62,7 @@ public class LoginController {
         else{
             loginRepo.createUser(user);
             session.setAttribute("user", user);
+            session.setAttribute("created", true);
             mvc = new ModelAndView("redirect:/protected/dashboard");
         }
 
