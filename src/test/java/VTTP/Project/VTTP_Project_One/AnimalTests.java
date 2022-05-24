@@ -21,6 +21,7 @@ import VTTP.Project.VTTP_Project_One.models.Animal;
 import VTTP.Project.VTTP_Project_One.models.User;
 import VTTP.Project.VTTP_Project_One.repositories.AnimalRepository;
 import VTTP.Project.VTTP_Project_One.repositories.LoginRepository;
+import VTTP.Project.VTTP_Project_One.services.AnimalService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -37,6 +38,9 @@ public class AnimalTests {
 
     @Autowired
     private AnimalRepository animalRepo;
+
+    @Autowired
+    private AnimalService animalSvc;
 
     private User fakeUserInfo(){
         User user = new User();
@@ -406,5 +410,10 @@ public class AnimalTests {
             fail("cannot retrieve response for viewing user's favourites", ex);
             return;
         }
+    }
+
+    @Test
+    public void getAnimalTest(){
+        assertNotNull(animalSvc.getAnimal().getName());
     }
 }

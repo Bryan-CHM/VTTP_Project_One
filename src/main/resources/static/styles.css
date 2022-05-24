@@ -2,7 +2,7 @@ body, html{
     height: 100%;
     /* background: #222D32; */
     font-family: 'Roboto', sans-serif;
-    background-image: url('elephantblurred.jpg');
+    background-image: url('elephant.jpg');
     background-repeat: no-repeat;
     background-attachment: fixed;  
     background-size: 100% 100%;
@@ -12,7 +12,7 @@ body, html{
 .login-container{
     background: #1A2226;
     margin: 12vh auto;
-    width: 32vw;
+    width: 31vw;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     padding: 25px;
 }
@@ -176,5 +176,9 @@ thead{
     height:fit-content;
     width:fit-content;
     margin: 5vh auto;
+}
+
+.add-remove-column{
+    vertical-align: middle;
 }
 

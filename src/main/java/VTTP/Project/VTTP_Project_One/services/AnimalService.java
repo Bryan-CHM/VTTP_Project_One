@@ -5,14 +5,12 @@ import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import VTTP.Project.VTTP_Project_One.models.Animal;
-import VTTP.Project.VTTP_Project_One.repositories.AnimalRepository;
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
@@ -22,12 +20,8 @@ import jakarta.json.JsonValue;
 @Service
 public class AnimalService {
     private final String ANIMALS_API = "https://zoo-animal-api.herokuapp.com/animals/rand/";
-    private final String ANIMAL_API = "https://zoo-animal-api.herokuapp.com/animals/rand/";
 
-    @Autowired
-    private AnimalRepository animalRepo;
-
-    public List<Animal> getListOfAnimals(Integer number){
+    public List<Animal> getListOfAnimals(Integer number, List<Animal> favouriteAnimals){
         List<Animal> animals = new LinkedList<>();
 
         String url = UriComponentsBuilder				
@@ -58,7 +52,47 @@ public class AnimalService {
             animal.setLifespan(Integer.parseInt(obj.getString("lifespan")));
             animal.setImage_url(obj.getString("image_link"));
             animals.add(animal);  
+        }
+        // Duplicate check and replacement
+        for(int i =0;i<animals.size();i++){
+            for(int j=0;j<favouriteAnimals.size();j++){
+                if (animals.get(i).getName().equals(favouriteAnimals.get(j).getName())){
+                    animals.remove(i);
+                    i--;
+                    animals.add(getAnimal());
+                    break;
+                }
+            }
         }    
         return animals;
+    }
+
+    public Animal getAnimal(){
+        String url = UriComponentsBuilder				
+        .fromUriString(ANIMALS_API)
+        .toUriString();
+        
+		RestTemplate template = new RestTemplate();
+        
+        ResponseEntity<String> resp = template.getForEntity(url, String.class); 
+        InputStream is = new ByteArrayInputStream (resp.getBody().getBytes());
+        JsonReader reader = Json.createReader(is);
+        JsonObject data = reader.readObject();
+        
+        Animal animal = new Animal();
+        animal.setName(data.getString("name"));
+        animal.setAnimal_type(data.getString("animal_type"));
+        animal.setActive_time(data.getString("active_time"));
+        animal.setHabitat(data.getString("habitat"));
+        animal.setDiet(data.getString("diet"));
+        animal.setLocation(data.getString("geo_range"));
+        animal.setMin_length(Double.parseDouble(data.getString("length_min")));
+        animal.setMax_length(Double.parseDouble(data.getString("length_max")));
+        animal.setMin_weight(Double.parseDouble(data.getString("weight_min")));
+        animal.setMax_weight(Double.parseDouble(data.getString("weight_max")));
+        animal.setLifespan(Integer.parseInt(data.getString("lifespan")));
+        animal.setImage_url(data.getString("image_link")); 
+         
+        return animal;
     }
 }

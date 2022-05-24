@@ -11,8 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.stereotype.Component;
-
 import VTTP.Project.VTTP_Project_One.models.User;
 
 public class AuthenticationFilter implements Filter{

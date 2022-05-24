@@ -67,7 +67,9 @@ public class AnimalController {
         ModelAndView mvc = new ModelAndView();
 
         Integer number = Integer.parseInt(form.getFirst(("num")));
-        List<Animal> animals = animalSvc.getListOfAnimals(number);
+        Integer userId = loginRepo.checkIfUserExists(user);
+        List<Animal> favouriteAnimals = animalRepo.getFavouriteAnimals(userId);
+        List<Animal> animals = animalSvc.getListOfAnimals(number, favouriteAnimals);
         for(Animal a : animals){
             a.setLikes(animalRepo.getNumberOfFavourites(a.getName()));
         }
