@@ -11,8 +11,9 @@
     <title>Favourite Animals</title>
 </head>
 <body>
+    <div th:if="${user.privated == false}">
     <div class="table-container" th:if="${animals.size() > 0}">
-        <h1>User <span th:text="${name}"></span> has liked these animals: </h1>
+        <h1>User <span th:text="${user.username}"></span> has liked these animals: </h1>
         <table class="table table-dark table-striped" >
             <thead>
                 <tr>
@@ -52,6 +53,7 @@
             </tr>
         </table>
     </div>
+</div>
     <div th:unless="${animals.size() > 0}" class="error-container" >
             <div class="login-icon">
                 <a href="/">
@@ -64,7 +66,22 @@
                 An error has occurred: 
             </div>
             <div class="errormessage">
-                <label>User <span th:text="${name}"></span> has not liked any animals yet! <a href="/">Please try again!</a></label>
+                <label>User <span th:text="${user.username}"></span> has not liked any animals yet! <a href="/">Please try again!</a></label>
+            </div>
+    </div>
+    <div th:if="${user.privated == true}" class="error-container" >
+            <div class="login-icon">
+                <a href="/">
+                    <i class="fa-solid fa-dove"></i>
+                    <i class="fa-solid fa-paw"></i>
+                    <i class="fa-solid fa-fish-fins"></i>
+            </a>
+            </div>
+            <div class="login-title">
+                An error has occurred: 
+            </div>
+            <div class="errormessage">
+                <label>User <span th:text="${user.username}"></span> has a private profile! <a href="/">Please try again!</a></label>
             </div>
     </div>
 </body>

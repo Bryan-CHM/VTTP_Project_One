@@ -21,13 +21,26 @@
         <div th:if="${statusmessage == 3}">
         Successfully removed <span th:text="${addedanimal.name}"></span>
         </div>
+        <div th:if="${statusmessage == 4}">
+        Successfully changed profile to private.
+        </div>
+        <div th:if="${statusmessage == 5}">
+        Successfully changed profile to public.
+        </div>
     </div>
 
     <div class="table-container" th:unless="${favanimals.size()>0}">
-        <h1>Welcome, <span th:text="${user.username}"></span>. You have not added any animals yet. <a class="btn btn-outline-primary" href="/logout">Logout</a></h1> 
+        <h1>Welcome, <span th:text="${user.username}"></span>. You have not added any animals yet. 
+            <a th:if="${user.privated == false}" class="btn btn-outline-primary" href="/protected/private">Change to Private Profile</a>
+            <a th:if="${user.privated == true}" class="btn btn-outline-primary" href="/protected/public">Change to Public Profile</a>
+            <a class="btn btn-outline-primary" href="/logout">Logout</a>
+        </h1> 
     </div>
     <div class="table-container" th:if="${favanimals.size()>0}">
-        <h1>Welcome, <span th:text="${user.username}"></span>. Here are your favourite animals.</h1>
+        <h1>Welcome, <span th:text="${user.username}"></span>. Here are your favourite animals.
+            <a th:if="${user.privated == false}" class="btn btn-outline-primary" href="/protected/private">Change to Private Profile</a>
+            <a th:if="${user.privated == true}" class="btn btn-outline-primary" href="/protected/public">Change to Public Profile</a>
+        </h1>
     </div>
 
     <div class="generate-container" th:unless="${favanimals.size() >0}">
@@ -99,8 +112,15 @@
                 <input type="hidden" name="min_weight" th:value="${a.min_weight}">
                 <input type="hidden" name="max_weight" th:value="${a.max_weight}">
                 
-                <td class="nowrap add-remove-column">
-                        <button class="btn btn-outline-primary" type="submit">Remove</button><br>Liked by <span th:text="${a.likes}"></span> users
+                <td class="add-remove-column">
+                        <button class="btn btn-outline-primary" type="submit">Remove</button>
+                        <br>
+                        <label th:if="${a.likes !=0}">
+                            Liked by you and <span th:text="${a.likes}"></span> other users
+                        </label>
+                        <label th:if="${a.likes ==0}">
+                            Liked by you
+                        </label>
                 </td>
             </form>
         </tr>

@@ -13,8 +13,9 @@ public class LoginRepository {
 
     private static final String SQL_VERIFY_USER = "select * from user where username = ? and password = sha1(?);";
     private static final String SQL_CHECK_USER_EXISTS = "select * from user where username = ?;";
-    private static final String SQL_CREATE_USER = "insert into user(username, password) values(?, sha1(?));";
-    public static final String SQL_DELETE_USER = "delete from user where username = ?;";
+    private static final String SQL_CREATE_USER = "insert into user(username, password, privated) values(?, sha1(?), ?);";
+    private static final String SQL_GET_USER_PRIVATE_SETTING = "select privated from user where username = ?";
+    private static final String SQL_SET_PRIVACY = "update user set privated = ? where username = ?";
 
     @Autowired
     private JdbcTemplate template;
@@ -40,8 +41,22 @@ public class LoginRepository {
     }
 
     public Boolean createUser(User user) throws DataIntegrityViolationException{
-        int count = template.update(SQL_CREATE_USER, user.getUsername(), user.getPassword());
+        int count = template.update(SQL_CREATE_USER, user.getUsername(), user.getPassword(), user.getPrivated());
         return 1 == count; 
-    }   
+    }
+    
+    public Boolean getUserPrivateSetting(User user){
+        final SqlRowSet result = template.queryForRowSet(
+            SQL_GET_USER_PRIVATE_SETTING, user.getUsername());
+        if(result.next()){
+            return result.getBoolean("privated");
+        }
+        return false;
+    }
+
+    public Boolean setPrivacy(User user){
+        int count = template.update(SQL_SET_PRIVACY, user.getPrivated(), user.getUsername());
+        return 1 == count; 
+    }
 
 }

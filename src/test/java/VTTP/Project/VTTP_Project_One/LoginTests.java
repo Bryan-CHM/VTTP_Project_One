@@ -37,6 +37,7 @@ public class LoginTests {
         User user = new User();
         user.setUsername("test");
         user.setPassword("test");
+        user.setPrivated(false);
         return user;
     }
 
@@ -261,6 +262,73 @@ public class LoginTests {
             return;
         }
     }
+
+    @Test
+    public void changePrivateSettingTest(){
+        User user = new User();
+        user.setUsername("test");
+        user.setPassword("test");
+        user.setPrivated(false);
+        
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("user", user);
+
+        RequestBuilder req = MockMvcRequestBuilders.get("/protected/private")
+            .accept(MediaType.TEXT_HTML_VALUE)
+            .session(session);
+
+        // Call the controller
+        MvcResult result = null;
+        try {
+            result = mvc.perform(req).andReturn();
+        } catch (Exception ex) {
+            fail("cannot perform mvc invocation for existing user dashboard", ex);
+            return;
+        }
+
+        // Get response
+        MockHttpServletResponse resp = result.getResponse();
+        try {
+            assertTrue(loginRepo.getUserPrivateSetting(user));
+        } catch (Exception ex) {
+            fail("cannot retrieve response for existing user dashboard", ex);
+            return;
+        }
+    }
+
+    @Test
+    public void changePublicSettingTest(){
+        User user = new User();
+        user.setUsername("test");
+        user.setPassword("test");
+        user.setPrivated(true);
+        
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("user", user);
+
+        RequestBuilder req = MockMvcRequestBuilders.get("/protected/public")
+            .accept(MediaType.TEXT_HTML_VALUE)
+            .session(session);
+
+        // Call the controller
+        MvcResult result = null;
+        try {
+            result = mvc.perform(req).andReturn();
+        } catch (Exception ex) {
+            fail("cannot perform mvc invocation for existing user dashboard", ex);
+            return;
+        }
+
+        // Get response
+        MockHttpServletResponse resp = result.getResponse();
+        try {
+            assertFalse(loginRepo.getUserPrivateSetting(user));
+        } catch (Exception ex) {
+            fail("cannot retrieve response for existing user dashboard", ex);
+            return;
+        }
+    }
+
 
 }
     

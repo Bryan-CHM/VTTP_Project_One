@@ -9,6 +9,7 @@ create table user(
     user_id INT AUTO_INCREMENT,
     username VARCHAR(32) NOT NULL,
     password VARCHAR(256) NOT NULL,
+    privated boolean DEFAULT false NOT NULL,
     primary key (user_id)
 );
 

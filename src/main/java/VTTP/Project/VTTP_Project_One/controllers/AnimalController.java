@@ -39,22 +39,31 @@ public class AnimalController {
     public ModelAndView getDashboard(HttpSession session){
         User user = (User)session.getAttribute("user");
         Boolean newlyCreated = (Boolean)session.getAttribute("created");
+        Boolean privacy = (Boolean)session.getAttribute("privacy");
         ModelAndView mvc = new ModelAndView();
 
         List<Animal> favouriteAnimals = new LinkedList<>();
         favouriteAnimals = animalRepo.getFavouriteAnimals(loginRepo.checkIfUserExists(user));
         for(Animal a : favouriteAnimals){
-            a.setLikes(animalRepo.getNumberOfFavourites(a.getName()));
+            a.setLikes(animalRepo.getNumberOfFavourites(a.getName())-1);
         }
         mvc.addObject("user", user);
         mvc.addObject("favanimals", favouriteAnimals);
         if(newlyCreated != null){
             mvc.addObject("statusmessage",1);
         }
+        else if(privacy!=null){
+            if(privacy){
+                mvc.addObject("statusmessage",4);
+            }else{
+                mvc.addObject("statusmessage",5);
+            }
+        }
         else{
             mvc.addObject("statusmessage",0);
         }
         session.removeAttribute("created");
+        session.removeAttribute("privacy");
         mvc.setStatus(HttpStatus.OK);
         mvc.setViewName("dashboard");
 
@@ -118,7 +127,7 @@ public class AnimalController {
         List<Animal> favouriteAnimals = new LinkedList<>();
         favouriteAnimals = animalRepo.getFavouriteAnimals(loginRepo.checkIfUserExists(user));
         for(Animal a : favouriteAnimals){
-            a.setLikes(animalRepo.getNumberOfFavourites(a.getName()));
+            a.setLikes(animalRepo.getNumberOfFavourites(a.getName())-1);
         }
 
         mvc.addObject("user", user);
@@ -167,7 +176,7 @@ public class AnimalController {
         List<Animal> favouriteAnimals = new LinkedList<>();
         favouriteAnimals = animalRepo.getFavouriteAnimals(loginRepo.checkIfUserExists(user));
         for(Animal a : favouriteAnimals){
-            a.setLikes(animalRepo.getNumberOfFavourites(a.getName()));
+            a.setLikes(animalRepo.getNumberOfFavourites(a.getName())-1);
         }
 
         mvc.addObject("user", user);
@@ -177,6 +186,30 @@ public class AnimalController {
         mvc.setStatus(HttpStatus.OK);
         mvc.setViewName("dashboard");
 
+        return mvc;
+    }
+
+    @GetMapping("/private")
+    public ModelAndView setPrivateProfile(HttpSession session){
+        User user = (User)session.getAttribute("user");
+        user.setPrivated(true);
+
+        loginRepo.setPrivacy(user);
+        
+        session.setAttribute("privacy", true);
+        ModelAndView mvc = new ModelAndView("redirect:/protected/dashboard");
+        return mvc;
+    }
+    
+    @GetMapping("/public")
+    public ModelAndView setPublicProfile(HttpSession session){
+        User user = (User)session.getAttribute("user");
+        user.setPrivated(false);
+        
+        loginRepo.setPrivacy(user);
+        
+        session.setAttribute("privacy", false);
+        ModelAndView mvc = new ModelAndView("redirect:/protected/dashboard");
         return mvc;
     }
 

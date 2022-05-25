@@ -53,6 +53,7 @@ public class LoginController {
         User user = new User();
         user.setUsername(username);
         user.setPassword(password);
+        user.setPrivated(false);
 
         if(loginRepo.checkIfUserExists(user) != -1){
             mvc.setStatus(HttpStatus.UNAUTHORIZED);
@@ -92,6 +93,7 @@ public class LoginController {
         mvc.addObject("errormessage", "1");
         
         if(loginRepo.verifyUser(user)){
+            user.setPrivated(loginRepo.getUserPrivateSetting(user));
             session.setAttribute("user", user);
             mvc = new ModelAndView("redirect:/protected/dashboard");
         }
@@ -103,8 +105,9 @@ public class LoginController {
         ModelAndView mvc = new ModelAndView();
         User user = new User();
         user.setUsername(name);
+        user.setPrivated(loginRepo.getUserPrivateSetting(user));
+        mvc.addObject("user", user);
         Integer userId = loginRepo.checkIfUserExists(user);
-        mvc.addObject("name", name);
         if(userId != -1){
             List<Animal> animals = animalRepo.getFavouriteAnimals(userId);
             mvc.addObject("animals", animals);
