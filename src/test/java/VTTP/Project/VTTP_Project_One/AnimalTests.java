@@ -452,7 +452,8 @@ public class AnimalTests {
     @Test
     public void viewValidUserFavouritesTest(){
 
-        RequestBuilder req = MockMvcRequestBuilders.get("/user/test")
+        RequestBuilder req = MockMvcRequestBuilders.get("/user/")
+        .queryParam("username", "test")
         .accept(MediaType.TEXT_HTML_VALUE);
 
         // Call the controller
@@ -478,7 +479,8 @@ public class AnimalTests {
     @Test
     public void viewInvalidUserFavouritesTest(){
 
-        RequestBuilder req = MockMvcRequestBuilders.get("/user/testabc")
+        RequestBuilder req = MockMvcRequestBuilders.get("/user")
+        .queryParam("username", "testabc")
         .accept(MediaType.TEXT_HTML_VALUE);
 
         // Call the controller

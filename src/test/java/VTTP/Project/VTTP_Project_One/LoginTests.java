@@ -79,6 +79,32 @@ public class LoginTests {
     }
 
     @Test
+    public void searchUserPageTest(){
+
+        RequestBuilder req = MockMvcRequestBuilders.get("/searchuser")
+            .accept(MediaType.TEXT_HTML_VALUE);
+
+        // Call the controller
+        MvcResult result = null;
+        try {
+            result = mvc.perform(req).andReturn();
+        } catch (Exception ex) {
+            fail("cannot perform mvc invocation for create user page", ex);
+            return;
+        }
+
+        // Get response
+        MockHttpServletResponse resp = result.getResponse();
+        try {
+            Integer statusCode = resp.getStatus();
+            assertEquals(200,statusCode);
+        } catch (Exception ex) {
+            fail("cannot retrieve response for create user page", ex);
+            return;
+        }
+    }
+
+    @Test
     public void createUserPageTest(){
 
         RequestBuilder req = MockMvcRequestBuilders.get("/create")

@@ -24,7 +24,7 @@
             <div class="errormessage">
                 <label th:if="${errormessage} == 0">Username already taken! <a href="/create">Please try again!</a></label>
                 <label th:if="${errormessage} == 1">Incorrect username or password! <a href="/">Please try again!</a></label>
-                <label th:if="${errormessage} == 2">User <span th:text="${user.username}"></span> does not exist! <a href="/getuser">Please try again!</a></label>
+                <label th:if="${errormessage} == 2">User <span th:text="${user.username}"></span> does not exist! <a href="/searchuser">Please try again!</a></label>
             </div>
     </div>
     <div class="footer">

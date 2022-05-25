@@ -46,10 +46,10 @@ public class LoginController {
         return mvc;
     }
 
-    @GetMapping("/getuser")
-    public ModelAndView getUserPage(){
+    @GetMapping("/searchuser")
+    public ModelAndView searchUserPage(){
         ModelAndView mvc = new ModelAndView();
-        mvc.setViewName("getuser");
+        mvc.setViewName("searchuser");
         return mvc;
     }
     
