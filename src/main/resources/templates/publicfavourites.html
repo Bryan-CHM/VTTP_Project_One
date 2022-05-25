@@ -27,7 +27,7 @@
                     <th>Lifespan</th>
                     <th>Length</th>
                     <th>Weight</th>
-                    <th><a class="btn btn-outline-primary" href="/">Back</a></th>
+                    <th><a class="btn btn-outline-primary" href="/getuser">Back</a></th>
                 </tr>
             </thead>
             <tr th:each="a : ${animals}">
@@ -66,7 +66,7 @@
                 An error has occurred: 
             </div>
             <div class="errormessage">
-                <label>User <span th:text="${user.username}"></span> has not liked any animals yet! <a href="/">Please try again!</a></label>
+                <label>User <span th:text="${user.username}"></span> has not liked any animals yet! <a href="/getuser">Please try again!</a></label>
             </div>
     </div>
     <div th:if="${user.privated == true}" class="error-container" >
@@ -81,7 +81,7 @@
                 An error has occurred: 
             </div>
             <div class="errormessage">
-                <label>User <span th:text="${user.username}"></span> has a private profile! <a href="/">Please try again!</a></label>
+                <label>User <span th:text="${user.username}"></span> has a private profile! <a href="/getuser">Please try again!</a></label>
             </div>
     </div>
 </body>

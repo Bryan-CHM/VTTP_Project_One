@@ -12,7 +12,7 @@ body, html{
 .login-container{
     background: #1A2226;
     margin: 12vh auto;
-    width: 31vw;
+    width: 40vw;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     padding: 25px;
 }
